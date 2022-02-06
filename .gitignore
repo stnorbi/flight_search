@@ -2,4 +2,6 @@
 *.pyc
 *.json
 *.csv
+*.txt
 
+!example/*.csv

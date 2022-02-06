@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=497px height=127px src=".Business Watcher Logo vol.1. - ENG.png" alt="Project Title"></a>
+ <img width=497px height=127px src="https://www.businesswatcher.hu/wp-content/uploads/2020/06/Business-Watcher-Logo-vol.1.-ENG.png" alt="Project Title"></a>
 </p>
 
 <h3 align="center">Solution of Python Weekend Entry Task (2022)</h3>
@@ -57,34 +57,43 @@ The code should run as is, no environment setup is required.
 
 
 
-Extract the received ZIP file in case of getting it via email or downloading it in that format.
+Extract the received ZIP file in case of getting it via email or downloading it from git repo in that format.
 Using (Ubuntu) Linux OS, such as:
 
 ```bash
-unzip flight_search.zip
+unzip flight_search-master.zip
 ```
 
 
 Extract the received ZIP file in case of using Windows OS command line:
 
 ```
-tar -xf flight_search.zip
+tar -xf flight_search-master.zip
 ```
 
 
-You have to get the following directory structure:
+You have to get the following directory structure within flight_search-master folder:
 ```bash
+├── example
+│   ├── example0.csv
+│   ├── example1.csv
+│   ├── example2.csv
+│   └── example3.csv
 ├── modules
 │   ├── data_validation.py
 │   ├── flights.py
 │   └── __init__.py
 ├── README.md
-└── solution.py
+├── solution.py
 ```
+`example/*.csv`:
+ * Input files for testing purpose
+
 `solution.py`:
   * It gets the parameters (mandatory & optionals - see in further subchapters below) from console and includes the execution function of the search-engine module, so called  `flights`. It calls `search function` from  `flights` module and validate the parameters got from terminal.
   If any of the mandatory or optional parameters is wrong the following error message retruns, without keep running:
 ```bash
+# ERROR MESSAGE
 One of the arguments is invalid!!
 ```
 
@@ -93,9 +102,9 @@ One of the arguments is invalid!!
   - It contains those functions which are necessary to derive proper search result(s):
   * set_result     --> writes the result set into `json_data.json` and to the terminal with the number of flights found.
   * get_traveltime --> converts string timestamp into ISO format and returns how much time the travel take.
-  * get_layover    --> calculates time between flight changes
+  * get_overlay    --> calculates time between flight changes
   * read_csv       --> read csv input file and validate input data records according to definitions in `modules/data_validation.py`
-  * get_flights    --> based on search parameters, this function is the core-engine of the task. It calls `get_traveltime` and `get_layover`   
+  * get_flights    --> based on search parameters, this function is the core-engine of the task. It calls `get_traveltime` and `get_overlay`   
                       functions.
   * search         --> calles direct or indirect way every function in this module by splitting the return and non-return searches.
 
@@ -147,7 +156,7 @@ List of mandatory arguments of the solution python module:
 ### 1. Execution
 If you just want to run a search on airports code without any additional filter, run the following command:
 ```bash
-    python -m solution  example3.csv BPZ WTN
+    python -m solution  example/example3.csv BPZ WTN
 ```
 
 There are two other optional argument which can be used to tune up Your search:
@@ -159,18 +168,25 @@ There are two other optional argument which can be used to tune up Your search:
 
 
 ### 2. Execution
-  a) scenario, if you want to search for flights which allow at least one luggage to take.
-  NOTE: in case of bags
+  a) scenario, if you want to search for flights which allow at least one lagguage to take.
+  **NOTE:** Changing flights take a look at what is the maxium number of bag can be taken because of "bag allowance". It can reduce your results.
+    (e.g. your 1st flight allows 2 bags, but changing to the 2nd one it just allows 1)
 
   ```bash
-    python -m solution  example3.csv BPZ WTN --bags=1 
+    python -m solution  example/example3.csv BPZ WTN --bags=1
+    
+    #OR
+    python -m solution  example/example3.csv BPZ WTN -b 1
   ```
 
-  b) scenario, if you want to search return flights with one luggage with return flights. 
-- **NOTE:** Take into account overlay limitations are also used in case of return flights and the luggage limitation as well.
+  b) scenario, if you want to search return flights as well with one lagguage. 
+- **NOTE:** Take into account overlay limitations are also used in case of return flights and the lagguage limitation as well.
 
 ```bash
-  python -m solution  example3.csv BPZ WTN --bags=1 --return
+  python -m solution  example/example3.csv BPZ WTN --bags=1 --return
+
+  #OR
+  python -m solution  example/example3.csv BPZ WTN -b 1 -r
 ```
 
 After running the parameterized module, **`the search result will be printed to console and saved in json_data.json file in the current`** directory.
@@ -180,7 +196,7 @@ Providing `return`  argument, the result set will include the "ways there" and "
 
 
 ```bash
-python -m solution example0.csv WIW ECV --bags=1 --return
+python -m solution example/example0.csv WIW ECV --bags=1 --return
 ```
 
 RESULT SET is a json-compatible structured list of trips `sorted by total_price` (ascending order alias cheapest is first):
