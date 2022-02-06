@@ -3,6 +3,23 @@ from modules import flights
 
 
 def main(argv):
+    
+    '''
+    It is dedicated to trigger flight search and that before receive mandatory and optional paramaters from terminal.
+    Also handling wrong input parameters by try-except statements with custome error message.
+    
+    # Parameters:
+    -------Mandatories------
+    $1: filename / filepath of input file (e.g. example3.csv)
+    $2: geoagraphical code of origin airport
+    $3: geographical code of destination airport
+    
+    -------Optionals--------
+    -b (--bags): number of bags what user would like to take
+    -r (--return): boolean value to flag search return flights as well
+    
+    '''
+    
     bag=None
     returns=None
 
@@ -28,6 +45,9 @@ def main(argv):
         
         
 if __name__=="__main__":
+    '''
+    Call of main function to launch flight search.
+    '''
     try:
         main(sys.argv[4:])       
     except Exception as error:
@@ -35,10 +55,3 @@ if __name__=="__main__":
         print('Flight research has been stoped for one of the reasons mentioned above.')   
 
 
-#test cases: 
-# 1. átszállással: BPZ WTN
-# 2. közvetlen járat: BPZ VVH
-
-# test cases:
-# 1. WUE-JBN are indirect journey?
-# 
