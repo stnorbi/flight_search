@@ -376,7 +376,7 @@ RESULT SET is a json-compatible structured list of trips `sorted by total_price`
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- [@stnorbi](https://github.com/stnorbi) - Initial work
+- [@stnorbi](https://github.com/stnorbi/flight_search) - Initial work
 - [@BusinessWatcher](https://businesswatcher.hu/en) - Blog
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
