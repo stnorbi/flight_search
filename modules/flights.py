@@ -1,9 +1,8 @@
 #from itertools import filterfalse
 import csv
 import json
-from datetime import datetime,timezone
+from datetime import datetime,timezone, timedelta
 from modules import data_validation as dv
-import pprint
 
 def search(filepath,origin,destination,bags=0,returns=False):
     '''
@@ -62,8 +61,8 @@ def get_flights(jsonOrig,jsonDest,origin,dest,bags):
             - Direct flight: passenger does not have to change flights
             - Indirect flight: passenger has to change flights
         Taking into account number of bags as constrain in both of the cases (direct and indirect flights).
-        Overlay as condition comes to the picture regarding indirect flights. 
-        (Only journeys will be part of search result set which  overlay time between flights is greater than 1 hour and less than 6 hours)
+        layover as condition comes to the picture regarding indirect flights. 
+        (Only journeys will be part of search result set which  layover time between flights is greater than 1 hour and less than 6 hours)
     
     # Return:
         It returns a list of the single and paired flights.
@@ -84,8 +83,8 @@ def get_flights(jsonOrig,jsonDest,origin,dest,bags):
             for j in jsonDest:
                 flights=dict()
                 if i['destination']==j['origin'] and j['destination']==dest:
-                    overlay=get_overlay(j['departure'],i['arrival'])
-                    if (overlay>1) and (overlay<6):                                 # Overlay conditioning
+                    layover=get_layover(j['departure'],i['arrival'])
+                    if (layover>1) and (layover<6):                                 # layover conditioning
                         if int(i['bags_allowed'])>int(j['bags_allowed']):
                             bags_allowed=j['bags_allowed']
                         else:
@@ -138,21 +137,21 @@ def read_csv(filepath,origin,destination):
     except Exception as error:
         print('Please open an input file with appropriate structure and format!')
 
-def get_overlay(endtime,starttime):
+def get_layover(endtime,starttime):
     '''
     # Input argument(s):
         endtime: string representation of timestamp regarding end of period (e.g. departure time in case of flight change)
         starttime: string representation of timestamp regarding start of period (e.g. arrival time in case of change for prior fligth)
         
     # Purpose:
-        Calculate overlay time.
+        Calculate layover time.
 
     # Return:
-        overlay: waiting time amount between flights.
+        layover: waiting time amount between flights.
     
     '''
-    overlay=(datetime.fromisoformat(endtime).astimezone(timezone.utc)-datetime.fromisoformat(starttime).astimezone(timezone.utc)).total_seconds() / 3600
-    return overlay
+    layover=(datetime.fromisoformat(endtime).astimezone(timezone.utc)-datetime.fromisoformat(starttime).astimezone(timezone.utc)) / timedelta(hours=1)
+    return layover
 
 
 def get_traveltime(arrival,departure):
@@ -186,7 +185,6 @@ def set_result(filename,data,returns):
         Json file in the filesystem and search result printed to the terminal.
     
     '''
-    print(json.dumps(data,sort_keys=False,indent=3,cls=DatetimeEncoder))
     if len(data)>0 and returns==False:
         with open(filename, 'w') as outfile:
             json.dump(data, outfile,cls=DatetimeEncoder)
