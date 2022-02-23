@@ -80,20 +80,20 @@ data=find_all_paths(graph, 'WIW', 'ECV')
 #data=find_all_paths(graph, 'ZRW', 'BPZ')
 #data=find_all_paths(graph, 'ZRW', 'BPZ')
 
-# print(json.dumps(find_all_paths(graph, 'WIW', 'ECV'),indent=3,sort_keys=False))
+print(json.dumps(find_all_paths(graph, 'WIW', 'ECV'),indent=3,sort_keys=False))
 f=[]
 with open(filepath) as csvFile:
     csvReader=csv.DictReader(csvFile)
       # flights['flights']=[]
-    for i in data:  
-      for row in csvReader:
-          flights=defaultdict(list)      
+    for row in csvReader:    
+        for i in data:   
           for j in range(0,len(i)):
-            if (j+1)<len(i) and (i[j]==row['origin'] or row['destination']==i[j+1]):
-              # print(row)
-              flights['flights'].append(row)
-              f.append(flights)
-              
+              flights=defaultdict(list) 
+              if (j+1)<len(i) and (i[j]==row['origin'] or row['destination']==i[j+1]):
+                # print(row)
+                flights['flights'].append(row)
+                f.append(flights)
+                
 # print(f)
 
 print(json.dumps(f,sort_keys=False,indent=2))
@@ -105,8 +105,8 @@ print(json.dumps(f,sort_keys=False,indent=2))
 
 #print(find_path(graph, 'ZRW', 'BPZ'))
 # print(len(data))
-# with open('testreult.json', 'w') as outfile:
-#             json.dump(data, outfile)
+with open('testreult.json', 'w') as outfile:
+            json.dump(f, outfile)
 
 
             
